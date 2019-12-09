@@ -1,0 +1,66 @@
+
+
+class Edge {
+  constructor(from,to,weight){
+    this.from = from
+    this.to = to
+    this.weight = weight
+  }
+}
+
+let edges = [
+[0,1,5],
+[1,6,60],
+[1,2,20],
+[2,3,10],
+[3,2,-15],
+[2,4,75],
+[4,9,100],
+[1,5,30],
+[5,6,5],
+[5,4,25],
+[5,8,50],
+[6,7,-50],
+[7,8,-10],
+]
+
+let V = 10
+
+let graph = []
+for(let arr of edges){
+  graph.push(new Edge(arr[0],arr[1],arr[2]))
+}
+
+function bellmanFord(graph,V,S){
+  let path = {}
+  for(let node of graph){
+    path[node.from] = Infinity
+    path[node.to] = Infinity
+  }
+  path[S] = 0
+  
+  for(let i = 0; i < V - 1; i++){
+      for(let edge of graph){
+        if(path[edge.from] + edge.weight < path[edge.to]){
+          path[edge.to] = path[edge.from] + edge.weight
+        }
+      } 
+  }
+ 
+ 
+ for(let i = 0; i < V - 1; i++){
+  for(let edge of graph){
+    if(path[edge.from] + edge.weight < path[edge.to]){
+      path[edge.to] = -Infinity 
+    }
+  }
+ }
+  console.log(path)
+  let negativeNode = []
+  for(let node in path){
+    if(path[node] === -Infinity){
+      negativeNode.push(node)
+    }
+  }
+  return negativeNode
+}
